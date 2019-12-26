@@ -11,14 +11,14 @@ app.use(express.static('public'))
 
 const game = createGame()
 
-game.start()
+//game.start()
 
 game.subscribe(command => {
     const { type, ...data } = command
 
-    console.log(`Emitting ${command.type}`, data)
     sockets.emit(type, data)
 })
+
 sockets.on('connection', socket => {
     const playerId = socket.id
     console.log(`Player connected on Server with id: ${playerId}`)
@@ -33,6 +33,5 @@ sockets.on('connection', socket => {
         game.movePlayer({ keyPressed, playerId })
     })
 })
-
 
 server.listen(3000, () => console.log('up port 3000'))

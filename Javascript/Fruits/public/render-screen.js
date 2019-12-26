@@ -1,9 +1,11 @@
 export default function renderScreen(screen, game, requestAnimationFrame, currentPlayerId) {
 
+    screen.width = game.state.screen.width
+    screen.height = game.state.screen.height
     const context = screen.getContext('2d')
 
     context.fillStyle = 'white'
-    context.clearRect(0, 0, 10, 10)
+    context.clearRect(0, 0, game.state.screen.width, game.state.screen.height)
 
     for (const playerId in game.state.players) {
         const player = game.state.players[playerId]

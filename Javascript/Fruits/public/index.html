@@ -10,9 +10,21 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             image-rendering: -moz-crisp-edges;
-            width: 400px;
-            height: 400px;
+        }
 
+        .row {
+            display: flex;
+
+        }
+
+        #score{
+            width: "300px";
+            border: 1px solid #CCC;
+            border-radius: 4px;
+        }
+
+        #score-title{
+            padding: 10px;
         }
     </style>
     <script src="/socket.io/socket.io.js"></script>
@@ -20,8 +32,19 @@
 </head>
 
 <body>
-    <canvas id="screen" width="10" height="10"></canvas>
 
+    <div class="row">
+        <canvas id="screen" class="row-item"></canvas>
+
+        <div id="score" class="row-item">
+            <div id="score-title">
+                Pontuação dos jogadores
+            </div> 
+            <div id="score-data">
+
+            </div>
+        </div>
+    </div>
     <script type="module">
 
         import createKeyboardListener from './keyboard-listener.js'
@@ -29,7 +52,6 @@
         import renderScreen from './render-screen.js'
 
         const game = createGame()
-
 
         const keyboardListener = createKeyboardListener(document)
         const socket = io()
@@ -45,6 +67,8 @@
             console.log(`Player connected on Client with id: ${playerId}`)
 
             const screen = document.getElementById('screen')
+            screen.style.width = "500px"
+            screen.style.height = "500px"
             renderScreen(screen, game, requestAnimationFrame, playerId)
         })
 
@@ -78,7 +102,7 @@
         socket.on('add-fruit', command => {
             game.addFruit(command)
         })
-        
+
         socket.on('remove-fruit', command => {
             game.removeFruit(command)
         })
