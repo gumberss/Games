@@ -1,6 +1,7 @@
 <html>
 
 <head>
+
     <meta charset="utf-8">
     <title>Joguinho online do Michel Telo</title>
 
@@ -17,13 +18,13 @@
 
         }
 
-        #score{
+        #score {
             width: "300px";
             border: 1px solid #CCC;
             border-radius: 4px;
         }
 
-        #score-title{
+        #score-title {
             padding: 10px;
         }
     </style>
@@ -32,14 +33,16 @@
 </head>
 
 <body>
+    <div id="like_button_container">
 
+    </div>
     <div class="row">
         <canvas id="screen" class="row-item"></canvas>
 
         <div id="score" class="row-item">
             <div id="score-title">
                 Pontuação dos jogadores
-            </div> 
+            </div>
             <div id="score-data">
 
             </div>
@@ -108,6 +111,12 @@
         })
 
     </script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+
 </body>
 
 </html>

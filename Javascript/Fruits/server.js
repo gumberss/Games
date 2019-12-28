@@ -1,37 +1,50 @@
-import express from 'express'
-import http from 'http'
-import createGame from './public/game.js'
-import socketio from 'socket.io'
+const express = require('express')
+const  http  = require('http')
+const  createGame = require('./public/game.js')
+const  socketio = require('socket.io')
+const  next = require('next')
 
 const app = express()
 const server = http.createServer(app)
 const sockets = socketio(server)
 
-app.use(express.static('public'))
+const dev = process.env.NODE_ENV !== 'production'
+const nextApp = next({ dev })
+const nextHandler = nextApp.getRequestHandler()
 
-const game = createGame()
+const PORT = process.env.PORT || 3000;
 
-//game.start()
+nextApp.prepare().then(() => {
 
-game.subscribe(command => {
-    const { type, ...data } = command
+    app.get('*', (req, res) => nextHandler(req, res))
 
-    sockets.emit(type, data)
-})
+    const game = createGame()
+//https://realguess.net/2013/06/29/share-javascript-code-between-browser-(front-end)-and-node-(back-end)/
+    //game.start()
 
-sockets.on('connection', socket => {
-    const playerId = socket.id
-    console.log(`Player connected on Server with id: ${playerId}`)
-    game.addPlayer({ playerId: playerId })
-    socket.emit('setup', game.state)
+    game.subscribe(command => {
+        const { type, ...data } = command
 
-    socket.on('disconnect', () => {
-        game.removePlayer({ playerId })
+        sockets.emit(type, data)
     })
 
-    socket.on('move-player', ({ keyPressed, playerId }) => {
-        game.movePlayer({ keyPressed, playerId })
+    sockets.on('connection', socket => {
+        const playerId = socket.id
+        console.log(`Player connected on Server with id: ${playerId}`)
+        game.addPlayer({ playerId: playerId })
+        socket.emit('setup', game.state)
+
+        socket.on('disconnect', () => {
+            game.removePlayer({ playerId })
+        })
+
+        socket.on('move-player', ({ keyPressed, playerId }) => {
+            game.movePlayer({ keyPressed, playerId })
+        })
+    })
+
+    server.listen(PORT, (err) => {
+        if (err) throw err
+        console.log('up port ' + PORT)
     })
 })
-
-server.listen(3000, () => console.log('up port 3000'))

@@ -1,0 +1,1 @@
+{"ast":null,"code":"import React from \"react\";\nvar __jsx = React.createElement;\nimport Link from 'next/link';\n\nconst Index = () => __jsx(\"div\", null, __jsx(\"p\", null, \"Hello Next.js\"), __jsx(Link, {\n  href: \"/about\"\n}, __jsx(\"a\", null, \"About Page\")));\n\nexport default Index;","map":null,"metadata":{},"sourceType":"module"}
