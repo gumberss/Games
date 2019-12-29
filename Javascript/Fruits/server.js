@@ -1,6 +1,6 @@
 const express = require('express')
 const  http  = require('http')
-const  createGame = require('./public/game.js')
+const  gameCreator = require('./public/game.js')
 const  socketio = require('socket.io')
 const  next = require('next')
 
@@ -17,9 +17,8 @@ const PORT = process.env.PORT || 3000;
 nextApp.prepare().then(() => {
 
     app.get('*', (req, res) => nextHandler(req, res))
+    const game = gameCreator.createGame()
 
-    const game = createGame()
-//https://realguess.net/2013/06/29/share-javascript-code-between-browser-(front-end)-and-node-(back-end)/
     //game.start()
 
     game.subscribe(command => {
