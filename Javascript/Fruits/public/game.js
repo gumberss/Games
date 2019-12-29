@@ -129,9 +129,10 @@
 
             const action = acceptedCommands[keyPressed]
 
-            player && action && action(player)
-
-            checkForFruitCollision(playerId)
+            if(player && action ){
+                action(player)
+                checkForFruitCollision(playerId)
+            }
         }
 
         function checkForFruitCollision(playerId) {
