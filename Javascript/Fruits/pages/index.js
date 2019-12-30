@@ -1,21 +1,24 @@
 import React from 'react'
-import GamePage from '../components/game-page'
+import GameScreen from '../components/game-screen'
+import ScoreScreen from '../components/score-screen'
 
 class Index extends React.Component {
     render() {
-        return (<GamePage/>)
+        return (<div style={styles.mainPage}>
+            <GameScreen />
+            <ScoreScreen />
+        </div>)
     }
 }
 
 const styles = {
-    canvas: {
-        height: '500px',
-        width: '500px',
-        'border': '1px solid #CCC',
-        'image-rendering': 'pixelated',
-        //'image-rendering': 'crisp-edges',
-        //'image-rendering': '-moz-crisp-edges'
-
+   
+    mainPage: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    mainPageItens: {
+        flex: 1
     }
 }
 

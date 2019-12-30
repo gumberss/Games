@@ -3,8 +3,8 @@ import createKeyboardListener from '../public/keyboard-listener'
 import { createGame } from '../public/game.js'
 import renderScreen from '../public/render-screen.js'
 import io from 'socket.io-client'
-
-class GamePage extends React.Component {
+import colors from '../default/colors'
+class GameScreen extends React.Component {
     render() {
         return (<canvas id="screen" style={styles.canvas}></canvas>)
     }
@@ -72,7 +72,7 @@ const styles = {
     canvas: {
         height: '500px',
         width: '500px',
-        'border': '1px solid #CCC',
+        'border': '1px solid ' + colors.GRAY,
         'image-rendering': 'pixelated',
         //'image-rendering': 'crisp-edges',
         //'image-rendering': '-moz-crisp-edges'
@@ -80,4 +80,4 @@ const styles = {
     }
 }
 
-export default GamePage;
+export default GameScreen;
