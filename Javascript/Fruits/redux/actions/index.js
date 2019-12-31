@@ -1,7 +1,7 @@
-import player from './player'
+import players from './players'
 import fruits from './fruits'
 
 export default {
-    ...player,
+    ...players,
     ...fruits
 }
