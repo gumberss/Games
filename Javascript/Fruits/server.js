@@ -19,7 +19,7 @@ nextApp.prepare().then(() => {
     app.get('*', (req, res) => nextHandler(req, res))
     const game = gameCreator.createGame()
 
-    //game.start()
+    game.start()
 
     game.subscribe(command => {
         const { type, ...data } = command

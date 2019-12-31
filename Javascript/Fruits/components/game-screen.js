@@ -1,16 +1,22 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
 import createKeyboardListener from '../public/keyboard-listener'
 import { createGame } from '../public/game.js'
 import renderScreen from '../public/render-screen.js'
 import io from 'socket.io-client'
 import colors from '../default/colors'
+import { fruitAdded, fruitTaked } from '../redux/actions/fruits'
+
 class GameScreen extends React.Component {
     render() {
         return (<canvas id="screen" style={styles.canvas}></canvas>)
     }
 
     componentDidMount() {
-        
+
+        const { fruitAdded, fruitTaked, fruits } = this.props
+
         const game = createGame()
 
         const keyboardListener = createKeyboardListener(document)
@@ -27,8 +33,9 @@ class GameScreen extends React.Component {
             console.log(`Player connected on Client with id: ${playerId}`)
 
             const screen = document.getElementById('screen')
-          
+
             renderScreen(screen, game, requestAnimationFrame, playerId)
+            //renderScreen(screen, game, requestAnimationFrame, playerId, fruits)
         })
 
         socket.on('setup', state => {
@@ -47,7 +54,6 @@ class GameScreen extends React.Component {
             game.removePlayer(command)
         })
 
-
         socket.on('move-player', command => {
             console.log(`Receiving`, command)
 
@@ -60,10 +66,13 @@ class GameScreen extends React.Component {
 
         socket.on('add-fruit', command => {
             game.addFruit(command)
+            fruitAdded(command)
         })
 
-        socket.on('remove-fruit', command => {
+        socket.on('fruit-taked', command => {
             game.removeFruit(command)
+            fruitTaked(command)
+            // game.incrementScore(command.playerId)
         })
     }
 }
@@ -80,4 +89,13 @@ const styles = {
     }
 }
 
-export default GameScreen;
+const mapStateToProps = ({ fruits }) => ({
+    fruits: Object.keys(fruits)
+})
+
+const mapDispatchToProps = dispatch => ({
+    fruitAdded: store => dispatch(fruitAdded(store)),
+    fruitTaked: store => dispatch(fruitTaked(store)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameScreen)

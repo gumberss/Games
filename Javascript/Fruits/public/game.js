@@ -4,6 +4,7 @@
         const state = {
             players: {},
             fruits: {},
+            score: {},
             screen: {
                 width: 40,
                 height: 40
@@ -42,6 +43,10 @@
                 y: playerY
             }
 
+            state.score[playerId] = {
+                fruits: 0
+            }
+
             notifyAll({
                 type: 'add-player',
                 playerId,
@@ -54,6 +59,7 @@
             const playerId = command.playerId
 
             delete state.players[playerId]
+            delete state.score[playerId]
 
             notifyAll({
                 type: 'remove-player',
@@ -83,11 +89,6 @@
             const fruitId = command.fruitId
 
             state.fruits[fruitId] && delete state.fruits[fruitId]
-
-            notifyAll({
-                type: 'remove-fruit',
-                fruitId
-            })
         }
 
         function movePlayer(command) {
@@ -129,7 +130,7 @@
 
             const action = acceptedCommands[keyPressed]
 
-            if(player && action ){
+            if (player && action) {
                 action(player)
                 checkForFruitCollision(playerId)
             }
@@ -140,7 +141,21 @@
 
             var fruitId = `${player.x}:${player.y}`;
 
-            !!state.fruits[fruitId] && removeFruit({ fruitId }) && console.log("colidiu")
+            if (state.fruits[fruitId]) {
+
+                console.log("colidiu")
+
+                state.score[playerId].fruits++;
+
+                removeFruit({ fruitId })
+
+                notifyAll({
+                    type: 'fruit-taked',
+                    fruitId,
+                    playerId
+                })
+
+            }
         }
 
         return {
