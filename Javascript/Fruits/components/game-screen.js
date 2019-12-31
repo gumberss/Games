@@ -25,9 +25,7 @@ class GameScreen extends React.Component {
             addPlayer,
             removePlayer,
             movePlayer,
-            setup,
-            fruits,
-            players } = this.props
+            setup } = this.props
 
         const { canvas } = this.refs
 
