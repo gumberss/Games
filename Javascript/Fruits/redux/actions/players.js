@@ -3,6 +3,7 @@ export const SELECT_USERNAME = 'SELECT_USERNAME'
 export const ADD_PLAYER = 'add-player'
 export const REMOVE_PLAYER = 'remove-player'
 export const MOVE_PLAYER = 'move-player'
+export const SETUP = 'setup'
 
 export function selectUserName({ userName }) {
     return {
@@ -34,3 +35,4 @@ export function movePlayer({ playerId, keyPressed }) {
         keyPressed
     }
 }
+

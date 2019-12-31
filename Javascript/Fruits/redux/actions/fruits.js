@@ -1,6 +1,6 @@
 export const FRUIT_TAKED = 'fruit-taked'
 export const ADD_FRUIT = 'add-fruit'
-
+export const SETUP = 'setup'
 
 export function fruitTaked({ playerId, fruitId }) {
     return {

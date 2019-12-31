@@ -2,7 +2,8 @@ import {
     SELECT_USERNAME,
     ADD_PLAYER,
     REMOVE_PLAYER,
-    MOVE_PLAYER
+    MOVE_PLAYER,
+    SETUP
 } from '../actions/players'
 
 const acceptedHorizontalMovementsCommands = {
@@ -56,10 +57,12 @@ const acceptedActions = {
             x: acceptedHorizontalMovementsCommands[action.keyPressed] || state[action.playerId].x,
             y: acceptedVerticalMovementCommands[action.keyPressed] || state[action.playerId].y
         }
+    }),
+    [SETUP]: (state, action) => ({
+        ...state,
+        ...action.newState.players
     })
 }
-
-
 
 export default function players(state = {}, action) {
 

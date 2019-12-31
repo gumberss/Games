@@ -7,16 +7,31 @@ import renderScreen from '../public/render-screen.js'
 import io from 'socket.io-client'
 import colors from '../default/colors'
 import { fruitAdded, fruitTaked } from '../redux/actions/fruits'
+import { addPlayer, removePlayer, movePlayer } from '../redux/actions/players'
+import { setup } from '../redux/actions/general'
 
 class GameScreen extends React.Component {
+
     render() {
-        return (<canvas id="screen" style={styles.canvas}></canvas>)
+
+        return (<canvas id="screen" ref='canvas' style={styles.canvas}></canvas>)
     }
 
     componentDidMount() {
 
-        const { fruitAdded, fruitTaked, fruits } = this.props
+        const {
+            fruitAdded,
+            fruitTaked,
+            addPlayer,
+            removePlayer,
+            movePlayer,
+            setup,
+            fruits,
+            players } = this.props
 
+        const { canvas } = this.refs
+
+        console.log(requestAnimationFrame)
         const game = createGame()
 
         const keyboardListener = createKeyboardListener(document)
@@ -32,34 +47,29 @@ class GameScreen extends React.Component {
             })
             console.log(`Player connected on Client with id: ${playerId}`)
 
-            const screen = document.getElementById('screen')
-
-            renderScreen(screen, game, requestAnimationFrame, playerId)
-            //renderScreen(screen, game, requestAnimationFrame, playerId, fruits)
+            this.tick(canvas, game, requestAnimationFrame, playerId)
         })
 
         socket.on('setup', state => {
-            console.log(`Receiving "setup" event from server`)
-            console.log(state)
+            setup(state)
             game.setState(state)
         })
 
         socket.on('add-player', command => {
-            console.log(`Receiving`, command)
+            addPlayer(command)
             game.addPlayer(command)
         })
 
         socket.on('remove-player', command => {
-            console.log(`Receiving`, command)
+            removePlayer(command)
             game.removePlayer(command)
         })
 
         socket.on('move-player', command => {
-            console.log(`Receiving`, command)
-
             const playerId = socket.id
 
             if (playerId !== command.playerId) {
+                movePlayer(command)
                 game.movePlayer(command)
             }
         })
@@ -73,6 +83,16 @@ class GameScreen extends React.Component {
             game.removeFruit(command)
             fruitTaked(command)
             // game.incrementScore(command.playerId)
+        })
+    }
+
+    tick(screen, game, requestAnimationFrame, currentPlayerId) {
+
+        const { fruits, players } = this.props
+
+        requestAnimationFrame(() => {
+            renderScreen(screen, game, requestAnimationFrame, currentPlayerId, fruits, players)
+            this.tick(screen, game, requestAnimationFrame, currentPlayerId)
         })
     }
 }
@@ -89,13 +109,18 @@ const styles = {
     }
 }
 
-const mapStateToProps = ({ fruits }) => ({
-    fruits: Object.keys(fruits)
+const mapStateToProps = ({ fruits, players }) => ({
+    fruits,
+    players
 })
 
 const mapDispatchToProps = dispatch => ({
     fruitAdded: store => dispatch(fruitAdded(store)),
     fruitTaked: store => dispatch(fruitTaked(store)),
+    addPlayer: store => dispatch(addPlayer(store)),
+    removePlayer: store => dispatch(removePlayer(store)),
+    movePlayer: store => dispatch(movePlayer(store)),
+    setup: store => dispatch(setup(store))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen)
