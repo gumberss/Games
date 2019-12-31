@@ -16,6 +16,8 @@ export default withRedux(initStore, { debug: true })(
 
         render() {
             const { Component, pageProps, store } = this.props
+
+            console.log(this.props)
             return (
                 <Container>
                     <Provider store={store}>

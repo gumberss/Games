@@ -1,4 +1,8 @@
-import { FRUIT_TAKED, ADD_FRUIT } from '../actions/fruits'
+import {
+    FRUIT_TAKED,
+    ADD_FRUIT,
+    SETUP
+} from '../actions/fruits'
 
 const acceptedActions = {
     [FRUIT_TAKED]: (state, action) => {
@@ -11,6 +15,10 @@ const acceptedActions = {
             x: action.fruitX,
             y: action.fruitY
         }
+    }),
+    [SETUP]: (state, action) => ({
+        ...state,
+        ...action.newState.fruits
     })
 }
 

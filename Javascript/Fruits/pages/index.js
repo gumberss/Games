@@ -1,6 +1,7 @@
 import React from 'react'
 import GameScreen from '../components/game-screen'
 import ScoreScreen from '../components/score-screen'
+import { connect } from 'react-redux'
 
 class Index extends React.Component {
     render() {
@@ -22,4 +23,9 @@ const styles = {
     }
 }
 
-export default Index;
+const mapStateToProps = ({ fruits, players }) => ({
+    fruits,
+    players
+})
+
+export default connect(mapStateToProps, null)(Index)
