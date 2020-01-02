@@ -6,16 +6,16 @@ class PlayerScore extends React.Component {
     render() {
 
         const { score, position } = this.props
-        
+
         const changesScoreStyle = styles[position] || {}
 
         const scoreStyle = { ...styles.defaultPlayerStyle, ...changesScoreStyle }
 
         return (<div style={scoreStyle}>
             <p>
-                Jogador: {score.id}
+                Jogador: {score && score.playerName}
                 <br />
-                Pontuação: {score.fruits}
+                Pontuação: {score && score.fruits}
             </p>
         </div>)
     }
@@ -43,7 +43,8 @@ const styles = {
 }
 
 const mapStateToProps = ({ score }, { playerId }) => ({
-    score: score[playerId]
+    score: score[playerId],
+
 })
 
 export default connect(mapStateToProps)(PlayerScore)

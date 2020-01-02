@@ -46,20 +46,16 @@ exports.createGame = function createGame() {
         }
 
         state.score[playerId] = {
+            playerName: playerId,
             fruits: 0
         }
 
         notifyAll({
             type: 'add-player',
             playerId,
+            playerName: playerId,
             playerX,
             playerY
-        })
-
-        notifyAll({
-            type: 'add-score',
-            playerId,
-            fruits: 0
         })
     }
 

@@ -5,13 +5,14 @@ const acceptedActions = {
     [CHANGE_SCORE]: (state, action) => ({
         ...state,
         [action.playerId]: {
+            ...state[action.playerId],
             fruits: ++state[action.playerId].fruits,
-
         }
     }),
     [ADD_SCORE]: (state, action) => ({
         ...state,
         [action.playerId]: {
+            playerName: action.playerName,
             fruits: action.fruits
         }
     }),

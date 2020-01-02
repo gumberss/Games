@@ -62,12 +62,15 @@ class GameScreen extends React.Component {
         })
 
         socket.on('setup', state => setup(state))
-        socket.on('add-player', command => addPlayer(command))
+        socket.on('add-player', command => {
+            addPlayer(command)
+            addScore(command)
+
+        })
         socket.on('remove-player', command => removePlayer(command))
         socket.on('add-fruit', command => fruitAdded(command))
         socket.on('fruit-taked', command => fruitTaked(command))
         socket.on('change-score', command => changeScore(command))
-        socket.on('add-score', command => addScore(command))
 
         socket.on('move-player', command => {
             const playerId = socket.id
