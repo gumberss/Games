@@ -61,8 +61,6 @@ export default function createGame() {
 
             console.log("colidiu")
 
-            //state.score[playerId].fruits++;
-
             notifyAll({
                 type: 'fruit-taked',
                 fruitId,

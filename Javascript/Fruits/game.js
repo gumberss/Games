@@ -1,4 +1,4 @@
-const  playerMover = require('./public/move-player-rule')
+const playerMover = require('./public/move-player-rule')
 
 exports.createGame = function createGame() {
 
@@ -54,6 +54,12 @@ exports.createGame = function createGame() {
             playerId,
             playerX,
             playerY
+        })
+
+        notifyAll({
+            type: 'add-score',
+            playerId,
+            fruits: 0
         })
     }
 
@@ -134,6 +140,12 @@ exports.createGame = function createGame() {
 
             notifyAll({
                 type: 'fruit-taked',
+                fruitId,
+                playerId
+            })
+
+            notifyAll({
+                type: 'change-score',
                 fruitId,
                 playerId
             })

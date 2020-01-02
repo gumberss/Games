@@ -1,18 +1,25 @@
-export default (props) => {
+import React from 'react'
+import { connect } from 'react-redux'
 
-    const { player } = props
+class PlayerScore extends React.Component {
 
-    const changesScoreStyle = styles[player.position] || {}
+    render() {
 
-    const scoreStyle = {...styles.defaultPlayerStyle, ...changesScoreStyle}
+        const { score, position } = this.props
+        
+        const changesScoreStyle = styles[position] || {}
 
-    return (<div style = {scoreStyle}>
-        <p>
-            Jogador: {player.name}
-            <br />
-            Pontuação: {player.score}
-        </p>
-    </div>)
+        const scoreStyle = { ...styles.defaultPlayerStyle, ...changesScoreStyle }
+
+        return (<div style={scoreStyle}>
+            <p>
+                Jogador: {score.id}
+                <br />
+                Pontuação: {score.fruits}
+            </p>
+        </div>)
+    }
+
 }
 
 const styles = {
@@ -21,16 +28,22 @@ const styles = {
         borderRadius: '3px',
         boxShadow: '0 0 10px 3px rgba(211, 211, 211, 0.3) inset',
     },
-    first: {
+    0: {
         backgroundColor: 'rgba(255, 255, 0, 0.4)',
         boxShadow: '0 0 10px 3px rgba(255, 255, 0, 0.3) inset',
     },
-    second: {
+    1: {
         backgroundColor: 'rgba(211, 211, 211, 0.4)',
         boxShadow: '0 0 10px 3px rgba(211, 211, 211, 1) inset',
     },
-    third: {
+    2: {
         backgroundColor: 'rgba(205, 127, 50, 0.4)',
         boxShadow: '0 0 10px 3px rgba(205, 127, 50, 0.3) inset',
     }
 }
+
+const mapStateToProps = ({ score }, { playerId }) => ({
+    score: score[playerId]
+})
+
+export default connect(mapStateToProps)(PlayerScore)
