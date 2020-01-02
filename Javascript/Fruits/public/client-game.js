@@ -1,3 +1,5 @@
+import { movePlayerRule } from './move-player-rule'
+
 export default function createGame() {
 
     const observers = []
@@ -31,39 +33,12 @@ export default function createGame() {
 
     function movePlayer(command, players, fruits, screen) {
 
-        const acceptedCommands = {
-            ArrowUp(player) {
-                return {
-                    ...player,
-                    y: player.y - (player.y - 1 >= 0)
-                }
-            },
-            ArrowDown(player) {
-                return {
-                    ...player,
-                    y: player.y + (player.y + 1 < screen.height)
-                }
-            },
-            ArrowLeft(player) {
-                return {
-                    ...player,
-                    x: player.x - (player.x - 1 >= 0)
-                }
-            },
-            ArrowRight(player) {
-                return {
-                    ...player,
-                    x: player.x + (player.x + 1 < screen.width)
-                }
-            }
-        }
-
         const { keyPressed, playerId } = command
 
         const player = players[playerId]
 
-        const action = acceptedCommands[keyPressed]
-        console.log(players && action)
+        var action = movePlayerRule(keyPressed, screen)
+
         if (player && action) {
 
             console.log(`Moving ${command.playerId} with ${command.keyPressed}`)
