@@ -8,6 +8,7 @@ import io from 'socket.io-client'
 import colors from '../default/colors'
 import { fruitAdded, fruitTaked } from '../redux/actions/fruits'
 import { addPlayer, removePlayer, movePlayer } from '../redux/actions/players'
+import { changeScore, addScore } from '../redux/actions/score'
 import { setup } from '../redux/actions/general'
 
 class GameScreen extends React.Component {
@@ -27,12 +28,12 @@ class GameScreen extends React.Component {
             movePlayer,
             gameAction,
             setup,
-            fruits,
-            players } = this.props
+            changeScore,
+            addScore
+        } = this.props
 
         const { canvas } = this.refs
 
-        console.log(requestAnimationFrame)
         const game = createGame()
 
         const keyboardListener = createKeyboardListener(document)
@@ -60,17 +61,16 @@ class GameScreen extends React.Component {
             this.tick(canvas, game, requestAnimationFrame, playerId)
         })
 
-        socket.on('setup', state => {
-            setup(state)
-        })
-
+        socket.on('setup', state => setup(state))
         socket.on('add-player', command => {
             addPlayer(command)
-        })
+            addScore(command)
 
-        socket.on('remove-player', command => {
-            removePlayer(command)
         })
+        socket.on('remove-player', command => removePlayer(command))
+        socket.on('add-fruit', command => fruitAdded(command))
+        socket.on('fruit-taked', command => fruitTaked(command))
+        socket.on('change-score', command => changeScore(command))
 
         socket.on('move-player', command => {
             const playerId = socket.id
@@ -80,15 +80,6 @@ class GameScreen extends React.Component {
 
                 movePlayer({ ...command })
             }
-        })
-
-        socket.on('add-fruit', command => {
-            fruitAdded(command)
-        })
-
-        socket.on('fruit-taked', command => {
-            fruitTaked(command)
-            // game.incrementScore(command.playerId)
         })
     }
 
@@ -127,7 +118,9 @@ const mapDispatchToProps = dispatch => ({
     addPlayer: store => dispatch(addPlayer(store)),
     removePlayer: store => dispatch(removePlayer(store)),
     movePlayer: store => dispatch(movePlayer(store)),
-    setup: store => dispatch(setup(store))
+    setup: store => dispatch(setup(store)),
+    changeScore: store => dispatch(changeScore(store)),
+    addScore: store => dispatch(addScore(store))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen)

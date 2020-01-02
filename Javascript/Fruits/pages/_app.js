@@ -6,7 +6,6 @@ import { initStore } from '../redux'
 export default withRedux(initStore, { debug: true })(
     class TheApp extends App {
         static async getInitialProps({ Component, ctx }) {
-            console.log(Component.getInitialProps)
             return {
                 ...(Component.getInitialProps
                     ? await Component.getInitialProps(ctx)
