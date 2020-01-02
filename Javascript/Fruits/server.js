@@ -1,6 +1,6 @@
 const express = require('express')
 const  http  = require('http')
-const  gameCreator = require('./public/game.js')
+const  gameCreator = require('./game.js')
 const  socketio = require('socket.io')
 const  next = require('next')
 
@@ -19,7 +19,7 @@ nextApp.prepare().then(() => {
     app.get('*', (req, res) => nextHandler(req, res))
     const game = gameCreator.createGame()
 
-    game.start()
+    //game.start()
 
     game.subscribe(command => {
         const { type, ...data } = command

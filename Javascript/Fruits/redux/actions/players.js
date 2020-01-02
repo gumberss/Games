@@ -28,11 +28,12 @@ export function removePlayer({ playerId }) {
     }
 }
 
-export function movePlayer({ playerId, keyPressed }) {
+export function movePlayer({ id, x, y }) {
     return {
         type: MOVE_PLAYER,
-        playerId,
-        keyPressed
+        id,
+        x,
+        y
     }
 }
 

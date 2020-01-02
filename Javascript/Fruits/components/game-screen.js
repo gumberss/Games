@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import createKeyboardListener from '../public/keyboard-listener'
-import { createGame } from '../public/game.js'
+import createGame from '../public/client-game.js'
 import renderScreen from '../public/render-screen.js'
 import io from 'socket.io-client'
 import colors from '../default/colors'
@@ -25,7 +25,10 @@ class GameScreen extends React.Component {
             addPlayer,
             removePlayer,
             movePlayer,
-            setup } = this.props
+            gameAction,
+            setup,
+            fruits,
+            players } = this.props
 
         const { canvas } = this.refs
 
@@ -37,12 +40,21 @@ class GameScreen extends React.Component {
 
         socket.on('connect', () => {
             const playerId = socket.id
+
+            game.subscribe(gameAction)
+
             keyboardListener.registerPlayerId(playerId)
-            keyboardListener.subscribe(game.movePlayer)
+            keyboardListener.subscribe(command => {
+
+                const { players, fruits } = this.props
+                game.movePlayer(command, players, fruits, game.state.screen)
+
+            })
             keyboardListener.subscribe(command => {
                 const { type, ...data } = command
                 socket.emit(type, data)
             })
+
             console.log(`Player connected on Client with id: ${playerId}`)
 
             this.tick(canvas, game, requestAnimationFrame, playerId)
@@ -50,35 +62,31 @@ class GameScreen extends React.Component {
 
         socket.on('setup', state => {
             setup(state)
-            game.setState(state)
         })
 
         socket.on('add-player', command => {
             addPlayer(command)
-            game.addPlayer(command)
         })
 
         socket.on('remove-player', command => {
             removePlayer(command)
-            game.removePlayer(command)
         })
 
         socket.on('move-player', command => {
             const playerId = socket.id
 
-            if (playerId !== command.playerId) {
-                movePlayer(command)
-                game.movePlayer(command)
+            if (playerId !== command.id) {
+                console.log("socket.on('move-player', command => {", command)
+
+                movePlayer({ ...command })
             }
         })
 
         socket.on('add-fruit', command => {
-            game.addFruit(command)
             fruitAdded(command)
         })
 
         socket.on('fruit-taked', command => {
-            game.removeFruit(command)
             fruitTaked(command)
             // game.incrementScore(command.playerId)
         })
@@ -113,6 +121,7 @@ const mapStateToProps = ({ fruits, players }) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+    gameAction: store => dispatch(store),
     fruitAdded: store => dispatch(fruitAdded(store)),
     fruitTaked: store => dispatch(fruitTaked(store)),
     addPlayer: store => dispatch(addPlayer(store)),

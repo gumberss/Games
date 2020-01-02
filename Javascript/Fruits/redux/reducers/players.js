@@ -6,33 +6,6 @@ import {
     SETUP
 } from '../actions/players'
 
-const acceptedHorizontalMovementsCommands = {
-    ArrowLeft(player) {
-        if (player.x - 1 >= 0) {
-            player.x = player.x - 1
-        }
-    },
-    ArrowRight(player) {
-        if (player.x + 1 < state.screen.width) {
-            player.x = player.x + 1
-        }
-    }
-}
-
-const acceptedVerticalMovementCommands = {
-    ArrowUp(player) {
-        if (player.y - 1 >= 0) {
-            player.y = player.y - 1
-        }
-    },
-    ArrowDown(player) {
-
-        if (player.y + 1 < state.screen.height) {
-            player.y = player.y + 1
-        }
-    }
-}
-
 const acceptedActions = {
     [SELECT_USERNAME]: (state, action) => ({
         ...state,
@@ -52,10 +25,10 @@ const acceptedActions = {
     },
     [MOVE_PLAYER]: (state, action) => ({
         ...state,
-        [action.playerId]: {
-            ...state[action.playerId],
-            x: acceptedHorizontalMovementsCommands[action.keyPressed] || state[action.playerId].x,
-            y: acceptedVerticalMovementCommands[action.keyPressed] || state[action.playerId].y
+        [action.id]: {
+            ...state[action.id],
+            x: action.x,
+            y: action.y
         }
     }),
     [SETUP]: (state, action) => ({
