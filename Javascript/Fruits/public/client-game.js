@@ -22,15 +22,6 @@ export default function createGame() {
         }
     }
 
-    function moveServerPlayer(command, fruits) {
-
-        const { player } = command
-
-        notifyAll({ ...command })
-
-        checkForFruitCollision({ playerId: player.Id, player, fruits })
-    }
-
     function movePlayer(command, players, fruits, screen) {
 
         const { keyPressed, playerId } = command
@@ -66,15 +57,12 @@ export default function createGame() {
                 fruitId,
                 playerId
             })
-
         }
     }
 
     return {
         movePlayer,
-        moveServerPlayer,
         subscribe,
         state
-
     }
 }
