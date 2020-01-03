@@ -30,7 +30,7 @@ exports.createGame = function createGame() {
 
     function notifyAll(command) {
         for (const observerFunction of observers) {
-            observerFunction(command)
+            observerFunction(command) 
         }
     }
 
