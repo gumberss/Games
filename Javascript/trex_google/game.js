@@ -21,7 +21,6 @@ var method = function () {
 		x => x.xPos - trex.xPos > 0 && x.xPos - trex.xPos < 20 * gameSpeed
 	)
 
-	
 	var oldObject = obstacles.find(x => x.xPos - trex.xPos < 10)
 
 	if (nextObs) {
@@ -39,11 +38,10 @@ var method = function () {
 			document.dispatchEvent(updown)
 			document.dispatchEvent(up)
 		}
-	} else {
-		if (!oldObject && !lastDown) {
-			lastDown = true
-			document.dispatchEvent(down)
-		}
+	} else if (!oldObject && !lastDown) {
+		console.log(obstacles)
+		lastDown = true
+		document.dispatchEvent(down)
 	}
 }
 
