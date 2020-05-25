@@ -18,7 +18,8 @@ var method = function () {
 		x => x.xPos - trex.xPos > 0 && x.xPos - trex.xPos < 20 * gameSpeed
 	)
 
-	var oldObject = obstacles.find(x => x.xPos - trex.xPos < 0)
+	
+	var oldObject = obstacles.find(x => x.xPos - trex.xPos < 10)
 
 	if (nextObs) {
 		if (nextObs.typeConfig.type === 'PTERODACTYL') {
