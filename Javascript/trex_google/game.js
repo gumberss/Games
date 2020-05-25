@@ -39,7 +39,6 @@ var method = function () {
 			document.dispatchEvent(up)
 		}
 	} else if (!oldObject && !lastDown) {
-		console.log(obstacles)
 		lastDown = true
 		document.dispatchEvent(down)
 	}
