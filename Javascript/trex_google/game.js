@@ -3,8 +3,7 @@ var space = new KeyboardEvent('keydown', { keyCode: 32 })
 var down = new KeyboardEvent('keydown', { keyCode: 40 })
 var updown = new KeyboardEvent('keyup', { keyCode: 40 })
 
-
- var lastDown = false
+var lastDown = false
 var method = function () {
 	var gameSpeed = this.window.Runner.instance_.currentSpeed
 
@@ -18,7 +17,7 @@ var method = function () {
 	var nextObs = obstacles.find(
 		x => x.xPos - trex.xPos > 0 && x.xPos - trex.xPos < 20 * gameSpeed
 	)
-	
+
 	var oldObject = obstacles.find(x => x.xPos - trex.xPos < 0)
 
 	if (nextObs) {
@@ -34,18 +33,17 @@ var method = function () {
 				console.log('down', nextObs, trex)
 			}
 		} else {
-			lastDown =false
+			lastDown = false
 			document.dispatchEvent(updown)
 			document.dispatchEvent(up)
 			console.log('up', nextObs, trex)
 		}
-	}else{
-		if(!oldObject && !lastDown ){
-			
-		lastDown = true
-    document.dispatchEvent(down)
-  }
-}
+	} else {
+		if (!oldObject && !lastDown) {
+			lastDown = true
+			document.dispatchEvent(down)
+		}
+	}
 }
 
 setInterval(method, 15)
