@@ -1,3 +1,6 @@
+// Do you want some fun? Uncomment the line below:
+// setInterval(() => this.window.Runner.instance_.currentSpeed += 0.5, 1000)
+
 var up = new KeyboardEvent('keydown', { keyCode: 38 })
 var space = new KeyboardEvent('keydown', { keyCode: 32 })
 var down = new KeyboardEvent('keydown', { keyCode: 40 })
@@ -27,17 +30,14 @@ var method = function () {
 				lastDown = false
 				document.dispatchEvent(updown)
 				document.dispatchEvent(up)
-				console.log('up', nextObs, trex)
 			} else {
 				lastDown = true
 				document.dispatchEvent(down)
-				console.log('down', nextObs, trex)
 			}
 		} else {
 			lastDown = false
 			document.dispatchEvent(updown)
 			document.dispatchEvent(up)
-			console.log('up', nextObs, trex)
 		}
 	} else {
 		if (!oldObject && !lastDown) {
